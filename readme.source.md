@@ -12,35 +12,6 @@ PM> Install-Package ApprovalTests.EntityFramework
 ```
 
 
-## Usage
-
-Given a model:
-
-snippet: model
-
-That is verified:
-
-snippet: usage
-
-Will result in this as an approved file:
-
-```
-Root = new Turtle(), ref: 0
-{
-    Name = "jim"
-    On = new Turtle()
-    {
-        Name = "kasper"
-        On = new Turtle()
-        {
-            Name = "llewellyn"
-            On = -> 0
-        }
-    }
-}
-```
-
-
 ## Links
 
  * NuGet: https://nuget.org/packages/ApprovalTests.EntityFramework/

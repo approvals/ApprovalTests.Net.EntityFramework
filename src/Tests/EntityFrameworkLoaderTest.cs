@@ -20,7 +20,6 @@ public class EntityFrameworkLoaderTest
         Approvals.Verify(CreateCompanyLoaderByName("Mic"));
     }
 
-
     private LambdaEnumerableLoader<Company, ModelContainer> CreateCompanyLoaderByName(string name)
     {
         return LoaderUtils.Load(db => (from c in db.Companies
