@@ -15,4 +15,4 @@ PM> Install-Package ApprovalTests.EntityFramework
 ## Links
 
  * NuGet: https://nuget.org/packages/ApprovalTests.EntityFramework/
- * Build: [![Build Status](https://dev.azure.com/approvals/ApprovalTests.Net.EntityFramework/_apis/build/status/approvals.ApprovalTests.Net.StatePrinter?branchName=master)](https://dev.azure.com/approvals/ApprovalTests.Net.StatePrinter/_build/latest?definitionId=1&branchName=master)
+ * Build: [![Build Status](https://dev.azure.com/approvals/ApprovalTests.Net.EntityFramework/_apis/build/status/approvals.ApprovalTests.Net.EntityFramework?branchName=master)](https://dev.azure.com/approvals/ApprovalTests.Net.EntityFramework/_build/latest?definitionId=4&branchName=master)
