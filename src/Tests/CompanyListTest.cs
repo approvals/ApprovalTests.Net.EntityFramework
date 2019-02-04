@@ -1,19 +1,17 @@
-﻿using Xunit;
+﻿using ApprovalTests;
+using Xunit;
 
-namespace ApprovalTests.Tests.EntityFramework
+public class CompanyListTest
 {
-    public class CompanyListTest
+    [Fact]
+    public void TestLoader()
     {
-        [Fact]
-        public void TestLoader()
-        {
-            Approvals.Verify(CompanyList.GetCompanyByName("m"));
-        }
+        Approvals.Verify(CompanyList.GetCompanyByName("m"));
+    }
 
-        [Fact]
-        public void TestLoader2()
-        {
-            Approvals.Verify(CompanyList.GetCompanyByName("mi"));
-        }
+    [Fact]
+    public void TestLoader2()
+    {
+        Approvals.Verify(CompanyList.GetCompanyByName("mi"));
     }
 }

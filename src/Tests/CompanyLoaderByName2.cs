@@ -1,21 +1,19 @@
 ﻿using System.Linq;
+using ApprovalTests.Tests.EntityFramework;
 
-namespace ApprovalTests.Tests.EntityFramework
+public class CompanyLoaderByName2 : MultiLoader<Company>
 {
-    public class CompanyLoaderByName2 : MultiLoader<Company>
+    private readonly string name;
+
+    public CompanyLoaderByName2(string name)
     {
-        private readonly string name;
+        this.name = name;
+    }
 
-        public CompanyLoaderByName2(string name)
-        {
-            this.name = name;
-        }
-
-        public override IQueryable<Company> GetLinqStatement()
-        {
-            return (from c in GetDatabaseContext().Companies
-                where c.Name.StartsWith(name)
-                select c).Take(1);
-        }
+    public override IQueryable<Company> GetLinqStatement()
+    {
+        return (from c in GetDatabaseContext().Companies
+            where c.Name.StartsWith(name)
+            select c).Take(1);
     }
 }

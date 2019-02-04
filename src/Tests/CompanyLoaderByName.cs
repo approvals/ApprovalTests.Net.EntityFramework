@@ -1,27 +1,25 @@
 ﻿using System.Linq;
 using ApprovalTests.EntityFrameworkUtilities;
+using ApprovalTests.Tests.EntityFramework;
 
-namespace ApprovalTests.Tests.EntityFramework
+public class CompanyLoaderByName : EntityFrameworkLoader<Company, Company[], ModelContainer>
 {
-    public class CompanyLoaderByName : EntityFrameworkLoader<Company, Company[], ModelContainer>
+    private readonly string name;
+
+    public CompanyLoaderByName(string name) : base(() => new ModelContainer())
     {
-        private readonly string name;
+        this.name = name;
+    }
 
-        public CompanyLoaderByName(string name) : base(() => new ModelContainer())
-        {
-            this.name = name;
-        }
+    public override IQueryable<Company> GetLinqStatement()
+    {
+        return (from c in GetDatabaseContext().Companies
+            where c.Name.StartsWith(name)
+            select c).Take(1);
+    }
 
-        public override IQueryable<Company> GetLinqStatement()
-        {
-            return (from c in GetDatabaseContext().Companies
-                where c.Name.StartsWith(name)
-                select c).Take(1);
-        }
-
-        public override Company[] Load()
-        {
-            return GetLinqStatement().ToArray();
-        }
+    public override Company[] Load()
+    {
+        return GetLinqStatement().ToArray();
     }
 }
