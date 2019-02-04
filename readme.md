@@ -1,4 +1,4 @@
-# <img src="https://avatars3.githubusercontent.com/u/36907" height="30px"> ApprovalTests.StatePrinter
+# <img src="https://avatars3.githubusercontent.com/u/36907" height="30px"> ApprovalTests.EntityFramework
 
 Extends [ApprovalTests](https://github.com/approvals/ApprovalTests.Net) to allow approval of EntityFramework Queries.
 
