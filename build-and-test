@@ -1,4 +1,7 @@
 #! /usr/bin/env bash
 set -euo pipefail
 
-dotnet build src/
+# Disable MSBuild source control info to avoid Microsoft.Build.Tasks.Git load errors on some runner images
+# See: https://github.com/actions/runner-images/issues/ (context in job logs)
+
+dotnet build src/ -p:EnableSourceControlInformation=false
