@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Data.Objects;
+using System.Data.Entity.Core.Objects;
 
 namespace ApprovalTests.EntityFrameworkUtilities
 {

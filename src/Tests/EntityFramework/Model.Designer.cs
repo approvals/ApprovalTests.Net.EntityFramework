@@ -9,9 +9,9 @@
 
 using System;
 using System.ComponentModel;
-using System.Data.EntityClient;
-using System.Data.Objects;
-using System.Data.Objects.DataClasses;
+using System.Data.Entity.Core.EntityClient;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Core.Objects.DataClasses;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
@@ -19,10 +19,10 @@ using System.Xml.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("Model", "FK_Employee_Company", "Company", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ApprovalTests.Tests.EntityFramework.Company), "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ApprovalTests.Tests.EntityFramework.Employee), true)]
-[assembly: EdmRelationshipAttribute("Model", "FK_Boss", "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ApprovalTests.Tests.EntityFramework.Employee), "Employee1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ApprovalTests.Tests.EntityFramework.Employee), true)]
-[assembly: EdmRelationshipAttribute("Model", "FK_Events_Employee", "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ApprovalTests.Tests.EntityFramework.Employee), "Event", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ApprovalTests.Tests.EntityFramework.Event), true)]
-[assembly: EdmRelationshipAttribute("Model", "FK_Job_Employee", "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(ApprovalTests.Tests.EntityFramework.Employee), "Job", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ApprovalTests.Tests.EntityFramework.Job), true)]
+[assembly: EdmRelationshipAttribute("Model", "FK_Employee_Company", "Company", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ApprovalTests.Tests.EntityFramework.Company), "Employee", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ApprovalTests.Tests.EntityFramework.Employee), true)]
+[assembly: EdmRelationshipAttribute("Model", "FK_Boss", "Employee", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ApprovalTests.Tests.EntityFramework.Employee), "Employee1", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ApprovalTests.Tests.EntityFramework.Employee), true)]
+[assembly: EdmRelationshipAttribute("Model", "FK_Events_Employee", "Employee", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(ApprovalTests.Tests.EntityFramework.Employee), "Event", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ApprovalTests.Tests.EntityFramework.Event), true)]
+[assembly: EdmRelationshipAttribute("Model", "FK_Job_Employee", "Employee", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.One, typeof(ApprovalTests.Tests.EntityFramework.Employee), "Job", System.Data.Entity.Core.Metadata.Edm.RelationshipMultiplicity.Many, typeof(ApprovalTests.Tests.EntityFramework.Job), true)]
 
 #endregion
 

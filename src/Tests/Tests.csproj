@@ -21,17 +21,6 @@
       <LastGenOutput>Model.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="Properties\DataSources\ApprovalTests.Tests.EntityFramework.ModelContainer.datasource" />
-    <!-- dotnet build does not run the VS EF6 designer tooling that normally splits Model.edmx into
-         these files and embeds them at build time, so they are checked in and embedded explicitly. -->
-    <EmbeddedResource Include="EntityFramework\Model.csdl">
-      <LogicalName>EntityFramework.Model.csdl</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EntityFramework\Model.ssdl">
-      <LogicalName>EntityFramework.Model.ssdl</LogicalName>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EntityFramework\Model.msl">
-      <LogicalName>EntityFramework.Model.msl</LogicalName>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
