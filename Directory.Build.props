@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <!-- Disable MSBuild source control information globally to avoid Microsoft.Build.Tasks.Git load errors on some runner images -->
+    <EnableSourceControlInformation>false</EnableSourceControlInformation>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Ensure the Microsoft.Build.Tasks.Git assembly is available during CI builds -->
+    <PackageReference Include="Microsoft.Build.Tasks.Git" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+</Project>
