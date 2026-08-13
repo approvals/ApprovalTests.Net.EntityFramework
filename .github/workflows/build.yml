@@ -16,4 +16,4 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json
-      - run: ./build_and_test
+      - run: ./build-and-test
