@@ -11,7 +11,7 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
     <PackageReference Include="Xunit" Version="2.4.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.11" />
     <ProjectReference Include="..\ApprovalTests.EntityFrameworkUtilities\ApprovalTests.EntityFrameworkUtilities.csproj" />
     <ProjectReference Include="..\ApprovalTests.EntityFramework\ApprovalTests.EntityFramework.csproj" />
   </ItemGroup>
