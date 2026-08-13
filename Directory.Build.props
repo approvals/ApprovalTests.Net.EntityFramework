@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <!-- Disable MSBuild source control information globally to avoid Microsoft.Build.Tasks.Git load errors on some runner images -->
+    <EnableSourceControlInformation>false</EnableSourceControlInformation>
+  </PropertyGroup>
+</Project>
