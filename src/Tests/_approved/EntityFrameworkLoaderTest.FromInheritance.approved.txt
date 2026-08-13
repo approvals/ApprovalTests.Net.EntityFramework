@@ -1,7 +1,7 @@
-﻿.param set @__name_0_startswith 'M1%'
-.param set @__p_1 1
+﻿.param set @name_startswith 'M1%'
+.param set @p 1
 
 SELECT "c"."Id", "c"."Name", "c"."Website"
 FROM "Company" AS "c"
-WHERE "c"."Name" LIKE @__name_0_startswith ESCAPE '\'
-LIMIT @__p_1
+WHERE "c"."Name" LIKE @name_startswith ESCAPE '\'
+LIMIT @p

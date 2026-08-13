@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace ApprovalTests.EntityFrameworkUtilities
 {
-    public class ObjectContextAdaptor<T> : IDatabaseToExecuteableQueryAdaptor
+    public class ObjectContextAdaptor<T> : IDatabaseToExecutableQueryAdapter
     {
         private readonly DbContext db;
         private readonly IQueryable<T> queryable;

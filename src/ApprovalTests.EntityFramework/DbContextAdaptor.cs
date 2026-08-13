@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApprovalTests.Persistence.EntityFramework.Version5
 {
-    public class DbContextAdaptor<T> : IDatabaseToExecuteableQueryAdaptor
+    public class DbContextAdaptor<T> : IDatabaseToExecutableQueryAdapter
     {
         private readonly DbContext db;
         private readonly IQueryable<T> queryable;

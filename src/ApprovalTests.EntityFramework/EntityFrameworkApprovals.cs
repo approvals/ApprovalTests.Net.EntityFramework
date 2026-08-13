@@ -1,5 +1,6 @@
 using System.Linq;
 using ApprovalTests.EntityFrameworkUtilities;
+using ApprovalTests.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApprovalTests.Persistence.EntityFramework
@@ -8,7 +9,7 @@ namespace ApprovalTests.Persistence.EntityFramework
     {
         public static void Verify<T>(DbContext db, IQueryable<T> queryable)
         {
-            DatabaseApprovals.Verify(new ObjectContextAdaptor<T>(db, queryable));
+            Approvals.Verify(new ExecutableSqlQuery(new ObjectContextAdaptor<T>(db, queryable)));
         }
     }
 }

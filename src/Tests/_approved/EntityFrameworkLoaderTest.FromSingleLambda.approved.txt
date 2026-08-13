@@ -1,12 +1,8 @@
-﻿.param set @__name_0_startswith 'Mic%'
-.param set @__p_1 10
-.param set @__p_2 1
+﻿.param set @name_startswith 'Mic%'
+.param set @p 10
+.param set @p2 1
 
-SELECT "t"."Id", "t"."Name", "t"."Website"
-FROM (
-    SELECT "c"."Id", "c"."Name", "c"."Website"
-    FROM "Company" AS "c"
-    WHERE "c"."Name" LIKE @__name_0_startswith ESCAPE '\'
-    LIMIT @__p_1
-) AS "t"
-LIMIT @__p_2
+SELECT "c"."Id", "c"."Name", "c"."Website"
+FROM "Company" AS "c"
+WHERE "c"."Name" LIKE @name_startswith ESCAPE '\'
+LIMIT min(@p, @p2)
