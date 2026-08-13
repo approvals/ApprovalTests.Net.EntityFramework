@@ -1,0 +1,24 @@
+name: Update Markdown Snippets
+
+on:
+  push:
+    branches: ['master']
+  workflow_dispatch:
+
+jobs:
+  format_and_snippets:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+    - run: dotnet tool install --global MarkdownSnippets.Tool
+    - run: mdsnippets .
+    # ensure that the above changes didn't break the build
+    - run: ./build-and-test
+    - name: Git Commit and Push
+      uses: github-actions-x/commit@v2.9
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+        commit-message: ". d update markdown snippets"
+        rebase: 'true'
+        name: Github Actions
+        email: actions@github.com
