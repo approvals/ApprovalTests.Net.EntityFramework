@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity.Core.Objects;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApprovalTests.EntityFrameworkUtilities
 {
     public class LambdaSingleLoader<T, C> : EntityFrameworkLoader<T, T, C>
-        where C : ObjectContext
+        where C : DbContext
     {
         private readonly EntityFrameworkLoader<T, IEnumerable<T>, C> loader;
 

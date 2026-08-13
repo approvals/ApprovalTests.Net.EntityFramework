@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Objects;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApprovalTests.EntityFrameworkUtilities
 {
     public class LambdaEnumerableLoader<T, C> : EntityFrameworkLoader<T, IEnumerable<T>, C>
-        where C : ObjectContext
+        where C : DbContext
     {
         private readonly Func<C, IQueryable<T>> func;
 

@@ -1,14 +1,14 @@
-﻿using System;
-using System.Data.Entity.Core.Objects;
+using System;
 using System.Linq;
 using ApprovalUtilities.Persistence;
 using ApprovalUtilities.Persistence.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApprovalTests.EntityFrameworkUtilities
 {
     public abstract class EntityFrameworkLoader<QueryType, LoaderType, DatabaseContextType> : IExecutableLoader<LoaderType>,
         IDisposable
-        where DatabaseContextType : ObjectContext
+        where DatabaseContextType : DbContext
     {
         private readonly Func<DatabaseContextType> dbCreator;
         private DatabaseContextType db;
@@ -30,7 +30,7 @@ namespace ApprovalTests.EntityFrameworkUtilities
 
         public string GetQuery()
         {
-            return EntityFrameworkUtils.GetQueryFromLinq((ObjectQuery) GetLinqStatement());
+            return EntityFrameworkUtils.GetQueryFromLinq(GetLinqStatement());
         }
 
         public virtual string ExecuteQuery(string query)

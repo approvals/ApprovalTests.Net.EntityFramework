@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Objects;
 using System.Linq;
 using ApprovalUtilities.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApprovalTests.EntityFrameworkUtilities
 {
     public abstract class MultiRowEntityFrameworkLoader<T, DatabaseContextType> : EntityFrameworkLoader<T, IEnumerable<T>, DatabaseContextType>
-        where DatabaseContextType : ObjectContext
+        where DatabaseContextType : DbContext
     {
         protected MultiRowEntityFrameworkLoader(Func<DatabaseContextType> dbCreator)
             : base(dbCreator)

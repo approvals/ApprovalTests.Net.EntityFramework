@@ -1,6 +1,7 @@
-﻿SELECT TOP (1) 
-    [Extent1].[Id] AS [Id], 
-    [Extent1].[Name] AS [Name], 
-    [Extent1].[Website] AS [Website]
-    FROM [dbo].[Company] AS [Extent1]
-    WHERE [Extent1].[Name] LIKE 'M1%' ESCAPE '~'
+﻿.param set @__name_0_startswith 'M1%'
+.param set @__p_1 1
+
+SELECT "c"."Id", "c"."Name", "c"."Website"
+FROM "Company" AS "c"
+WHERE "c"."Name" LIKE @__name_0_startswith ESCAPE '\'
+LIMIT @__p_1

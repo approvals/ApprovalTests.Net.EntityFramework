@@ -1,17 +1,17 @@
 using System.Data.Common;
-using System.Data.Entity.Core.EntityClient;
-using System.Data.Entity.Core.Objects;
 using System.Linq;
 using ApprovalUtilities.Persistence.Database;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace ApprovalTests.EntityFrameworkUtilities
 {
     public class ObjectContextAdaptor<T> : IDatabaseToExecuteableQueryAdaptor
     {
-        private readonly ObjectContext db;
+        private readonly DbContext db;
         private readonly IQueryable<T> queryable;
 
-        public ObjectContextAdaptor(ObjectContext db, IQueryable<T> queryable)
+        public ObjectContextAdaptor(DbContext db, IQueryable<T> queryable)
         {
             this.db = db;
             this.queryable = queryable;
@@ -19,7 +19,7 @@ namespace ApprovalTests.EntityFrameworkUtilities
 
         public string GetQuery()
         {
-            return EntityFrameworkUtils.GetQueryFromLinq((ObjectQuery<T>) queryable);
+            return EntityFrameworkUtils.GetQueryFromLinq(queryable);
         }
 
         public DbConnection GetConnection()
@@ -30,15 +30,14 @@ namespace ApprovalTests.EntityFrameworkUtilities
 
     public class EntityFrameworkUtils
     {
-        public static DbConnection GetConnectionFrom(ObjectContext context)
+        public static DbConnection GetConnectionFrom(DbContext context)
         {
-            return ((EntityConnection) context.Connection).StoreConnection;
+            return context.Database.GetDbConnection();
         }
 
-        public static string GetQueryFromLinq(ObjectQuery linq)
+        public static string GetQueryFromLinq(IQueryable linq)
         {
-            var sql = linq.ToTraceString();
-            return linq.Parameters.Aggregate(sql, (current, p) => current.Replace("@" + p.Name, "\'" + p.Value + "\'"));
+            return linq.ToQueryString();
         }
     }
 }
