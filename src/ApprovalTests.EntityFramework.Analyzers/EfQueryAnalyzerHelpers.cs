@@ -36,8 +36,8 @@ internal static class EfQueryAnalyzerHelpers
 
     /// <summary>
     /// Roslyn's own pragma suppression only covers diagnostics located after the disable
-    /// directive, but these analyzers report at the method identifier (so the message reads
-    /// naturally), which usually precedes the query itself. Emulate suppression by replaying
+    /// directive, but a #pragma disable placed right before the query line may still need
+    /// to suppress it even though other trivia can intervene. Emulate suppression by replaying
     /// the tree's pragma directives up to the query's position instead.
     /// </summary>
     public static bool IsSuppressedAt(SyntaxNode node, string diagnosticId)

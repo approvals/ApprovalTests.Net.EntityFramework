@@ -43,7 +43,7 @@ public class EfQueryStandaloneMethodAnalyzer : DiagnosticAnalyzer
         var queryNode = EfQueryAnalyzerHelpers.FindEfQuery(body, context.SemanticModel);
         if (queryNode is not null && !EfQueryAnalyzerHelpers.IsSuppressedAt(queryNode, DiagnosticId))
         {
-            context.ReportDiagnostic(Diagnostic.Create(Rule, method.Identifier.GetLocation(), method.Identifier.Text));
+            context.ReportDiagnostic(Diagnostic.Create(Rule, queryNode.GetLocation(), method.Identifier.Text));
         }
     }
 
@@ -59,7 +59,7 @@ public class EfQueryStandaloneMethodAnalyzer : DiagnosticAnalyzer
         var queryNode = EfQueryAnalyzerHelpers.FindEfQuery(body, context.SemanticModel);
         if (queryNode is not null && !EfQueryAnalyzerHelpers.IsSuppressedAt(queryNode, DiagnosticId))
         {
-            context.ReportDiagnostic(Diagnostic.Create(Rule, function.Identifier.GetLocation(), function.Identifier.Text));
+            context.ReportDiagnostic(Diagnostic.Create(Rule, queryNode.GetLocation(), function.Identifier.Text));
         }
     }
 

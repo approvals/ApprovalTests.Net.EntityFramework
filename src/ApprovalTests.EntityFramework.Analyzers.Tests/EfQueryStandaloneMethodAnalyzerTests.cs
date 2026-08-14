@@ -51,7 +51,7 @@ internal static class Verifier
 
 public class EfQueryStandaloneMethodAnalyzerTests
 {
-    private const string DiagnosticId = "ENTITYFRAMEWORKAPPROVALS001";
+    private const string DiagnosticId = EfQueryStandaloneMethodAnalyzer.DiagnosticId;
 
     // Shared DbContext/entity scaffolding that every test source is wrapped around.
     private static string WithScaffolding(string methodBody) => $$"""
@@ -108,9 +108,9 @@ public class EfQueryStandaloneMethodAnalyzerTests
     public async Task QueryBuiltThenEnumeratedInline_ReturnsList_Diagnostic()
     {
         var source = WithScaffolding("""
-            public List<Company> {|#0:LoadCompanies|}(MyDbContext db, string name)
+            public List<Company> LoadCompanies(MyDbContext db, string name)
             {
-                var query = db.Companies.Where(c => c.Name.StartsWith(name));
+                var query = {|#0:db.Companies|}.Where(c => c.Name.StartsWith(name));
                 return query.ToList();
             }
             """);
@@ -128,9 +128,9 @@ public class EfQueryStandaloneMethodAnalyzerTests
         var source = WithScaffolding("""
             private int _lastCount;
 
-            public void {|#0:RefreshCompanies|}(MyDbContext db, string name)
+            public void RefreshCompanies(MyDbContext db, string name)
             {
-                var query = db.Companies.Where(c => c.Name.StartsWith(name));
+                var query = {|#0:db.Companies|}.Where(c => c.Name.StartsWith(name));
                 _lastCount = query.Count();
             }
             """);
@@ -146,9 +146,9 @@ public class EfQueryStandaloneMethodAnalyzerTests
     public async Task QueryBuiltInline_ThenReturnedAsList_MethodSyntax_Diagnostic()
     {
         var source = WithScaffolding("""
-            public List<Company> {|#0:GetActiveCompanies|}(MyDbContext db)
+            public List<Company> GetActiveCompanies(MyDbContext db)
             {
-                return db.Companies.Where(c => c.Id > 0).ToList();
+                return {|#0:db.Companies|}.Where(c => c.Id > 0).ToList();
             }
             """);
 
@@ -198,9 +198,9 @@ public class EfQueryStandaloneMethodAnalyzerTests
             {
                 return Local();
 
-                int {|#0:Local|}()
+                int Local()
                 {
-                    var query = db.Companies.Where(c => c.Name.StartsWith(name));
+                    var query = {|#0:db.Companies|}.Where(c => c.Name.StartsWith(name));
                     return query.Count();
                 }
             }
