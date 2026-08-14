@@ -36,6 +36,13 @@ public class EntityFrameworkLoaderTest
         }
     }
 
+    [Fact]
+    public void VerifyQueryAsSql()
+    {
+        using var db = new ModelContainer();
+        EntityFrameworkApprovals.VerifyQueryAsSql(CreateCompanyLoaderByName2(db, "Mic"));
+    }
+
     private IQueryable<Company> CreateCompanyLoaderByName2(ModelContainer db, string name)
     {
         return (from c in db.Companies

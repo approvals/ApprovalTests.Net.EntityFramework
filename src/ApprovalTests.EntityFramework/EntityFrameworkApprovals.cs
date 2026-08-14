@@ -11,5 +11,10 @@ namespace ApprovalTests.Persistence.EntityFramework
         {
             Approvals.Verify(new ExecutableSqlQuery(new ObjectContextAdaptor<T>(db, queryable)));
         }
+
+        public static void VerifyQueryAsSql(IQueryable query)
+        {
+            Approvals.VerifyWithExtension(query.ToQueryString() + "\n", ".sql");
+        }
     }
 }
