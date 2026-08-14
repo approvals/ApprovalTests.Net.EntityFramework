@@ -82,10 +82,3 @@ severity override paths that come for free with `DiagnosticAnalyzer`, and
 default the packaged severity to `Warning` (not `Error`) so adoption in an
 existing codebase doesn't break builds outright.
 
-## Open questions
-
-- Where should this analyzer project live — new `src/ApprovalTests.EntityFramework.Analyzers`
-   project in the existing solution, or a separate repo/package? Given this
-   repo is scoped to the EF approvals runtime library, a sibling project in
-   the same solution seems natural, shipped as a companion (not merged into)
-   the main NuGet package.

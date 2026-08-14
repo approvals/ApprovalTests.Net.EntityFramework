@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <!-- Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.XUnit's own dependencies are old
+         netstandard/.NET Framework packages; they still work on net10.0 but trigger NU1701. -->
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageReference Include="Xunit" Version="2.9.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.11" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.XUnit" Version="1.1.2" />
+
+    <!--
+      No project reference to an analyzer here: the analyzer described in
+      docs/design/ef-query-standalone-method-analyzer.md does not exist yet.
+      This project captures the intended test cases as a spec; it will not
+      compile until an ApprovalTests.EntityFramework.Analyzers project (with
+      an EfQueryStandaloneMethodAnalyzer type) is added and referenced.
+    -->
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>
+</Project>
