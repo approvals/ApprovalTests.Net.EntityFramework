@@ -78,7 +78,7 @@ public class EfQueryableModelTypeAnalyzer : DiagnosticAnalyzer
 
         context.ReportDiagnostic(Diagnostic.Create(
             Rule,
-            identifier.GetLocation(),
+            returnType.GetLocation(),
             identifier.Text,
             elementType.ToDisplayString()));
     }

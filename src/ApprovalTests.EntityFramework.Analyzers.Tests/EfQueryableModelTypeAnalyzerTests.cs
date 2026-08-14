@@ -106,7 +106,7 @@ public class EfQueryableModelTypeAnalyzerTests
     public async Task IQueryableOfScalarProjection_Diagnostic()
     {
         var source = WithScaffolding("""
-            public IQueryable<string> {|#0:CompanyNamesStartingWith|}(MyDbContext db, string name)
+            public {|#0:IQueryable<string>|} CompanyNamesStartingWith(MyDbContext db, string name)
             {
                 return db.Companies.Where(c => c.Name.StartsWith(name)).Select(c => c.Name);
             }
@@ -125,7 +125,7 @@ public class EfQueryableModelTypeAnalyzerTests
         // CompanyDto is shaped identically to the mapped Company entity but is never exposed
         // via a DbSet<T>, so it isn't an EF model type: name/shape matching isn't enough.
         var source = WithScaffolding("""
-            public IQueryable<CompanyDto> {|#0:CompanyDtos|}(MyDbContext db)
+            public {|#0:IQueryable<CompanyDto>|} CompanyDtos(MyDbContext db)
             {
                 return db.Companies.Select(c => new CompanyDto { Id = c.Id, Name = c.Name });
             }
@@ -142,7 +142,7 @@ public class EfQueryableModelTypeAnalyzerTests
     public async Task IQueryableOfAnonymousType_Diagnostic()
     {
         var source = WithScaffolding("""
-            public IQueryable<object> {|#0:CompanyProjection|}(MyDbContext db)
+            public {|#0:IQueryable<object>|} CompanyProjection(MyDbContext db)
             {
                 return db.Companies.Select(c => new { c.Id, c.Name }).Cast<object>();
             }
@@ -193,7 +193,7 @@ public class EfQueryableModelTypeAnalyzerTests
             {
                 return Local();
 
-                IQueryable<string> {|#0:Local|}()
+                {|#0:IQueryable<string>|} Local()
                 {
                     return db.Companies.Select(c => c.Name);
                 }
