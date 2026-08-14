@@ -1,4 +1,8 @@
+using System;
+using System.Collections.Immutable;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Testing;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
@@ -12,7 +16,35 @@ using ApprovalTests.EntityFramework.Analyzers;
 
 namespace ApprovalTests.EntityFramework.Analyzers.Tests;
 
-using Verifier = CSharpAnalyzerVerifier<EfQueryStandaloneMethodAnalyzer, XUnitVerifier>;
+// The default ReferenceAssemblies used by CSharpAnalyzerVerifier resolve an old netstandard2.0
+// ref pack that's incompatible with the net10.0 Microsoft.EntityFrameworkCore assembly, and
+// don't include EF Core at all. Instead, reference the exact assemblies this test host is
+// already running against (via the trusted platform assemblies list) plus EF Core itself.
+internal static class Verifier
+{
+    private static readonly ImmutableArray<MetadataReference> RuntimeReferences =
+        ((string)AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")!)
+            .Split(';')
+            .Where(path => path.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+            .Select(path => (MetadataReference)MetadataReference.CreateFromFile(path))
+            .Append(MetadataReference.CreateFromFile(typeof(Microsoft.EntityFrameworkCore.DbContext).Assembly.Location))
+            .ToImmutableArray();
+
+    public static DiagnosticResult Diagnostic(string diagnosticId) =>
+        CSharpAnalyzerVerifier<EfQueryStandaloneMethodAnalyzer, XUnitVerifier>.Diagnostic(diagnosticId);
+
+    public static async Task VerifyAnalyzerAsync(string source, params DiagnosticResult[] expected)
+    {
+        var test = new CSharpAnalyzerTest<EfQueryStandaloneMethodAnalyzer, XUnitVerifier>
+        {
+            TestCode = source,
+            ReferenceAssemblies = new ReferenceAssemblies("net10.0"),
+        };
+        test.TestState.AdditionalReferences.AddRange(RuntimeReferences);
+        test.ExpectedDiagnostics.AddRange(expected);
+        await test.RunAsync();
+    }
+}
 
 public class EfQueryStandaloneMethodAnalyzerTests
 {

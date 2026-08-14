@@ -66,8 +66,7 @@ Otherwise, flag the query expression's location. Concretely, this covers:
   lambda bodies, find EF query roots inside, then check the shape).
 - Diagnostic ID: `ENTITYFRAMEWORKAPPROVALS001`,
   category `Design`, default severity `Warning`.
-- Message: `"EF query should be built in a standalone method (or
-  LoaderUtils.Load lambda) so it can be approval-tested on its own — extract
+- Message: `"EF query should be built in a standalone method so it can be approval-tested on its own — extract
   it out of '{0}'."`
 - Ship as a `netstandard2.0` analyzer project referencing
   `Microsoft.CodeAnalysis.CSharp` (matching the existing multi-project
