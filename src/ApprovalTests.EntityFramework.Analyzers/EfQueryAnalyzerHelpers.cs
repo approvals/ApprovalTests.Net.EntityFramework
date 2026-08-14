@@ -15,29 +15,23 @@ internal static class EfQueryAnalyzerHelpers
     /// </summary>
     public static SyntaxNode? FindEfQuery(SyntaxNode root, SemanticModel semanticModel)
     {
-        foreach (var node in DescendantsExcludingNestedLocalFunctions(root))
+        return DescendantsExcludingNestedLocalFunctions(root)
+            .Where(node => node is MemberAccessExpressionSyntax or IdentifierNameSyntax)
+            .FirstOrDefault(node => IsDbSetAccess(node, semanticModel));
+    }
+
+    private static bool IsDbSetAccess(SyntaxNode node, SemanticModel semanticModel)
+    {
+        var memberType = semanticModel.GetSymbolInfo(node).Symbol switch
         {
-            if (node is not (MemberAccessExpressionSyntax or IdentifierNameSyntax))
-            {
-                continue;
-            }
+            IPropertySymbol property => property.Type,
+            IFieldSymbol field => field.Type,
+            _ => null
+        };
 
-            var memberType = semanticModel.GetSymbolInfo(node).Symbol switch
-            {
-                IPropertySymbol property => property.Type,
-                IFieldSymbol field => field.Type,
-                _ => null
-            };
-
-            if (memberType is INamedTypeSymbol { IsGenericType: true } named
-                && named.ConstructedFrom.MetadataName == "DbSet`1"
-                && named.ConstructedFrom.ContainingNamespace.ToDisplayString() == "Microsoft.EntityFrameworkCore")
-            {
-                return node;
-            }
-        }
-
-        return null;
+        return memberType is INamedTypeSymbol { IsGenericType: true } named
+            && named.ConstructedFrom.MetadataName == "DbSet`1"
+            && named.ConstructedFrom.ContainingNamespace.ToDisplayString() == "Microsoft.EntityFrameworkCore";
     }
 
     /// <summary>
@@ -48,28 +42,14 @@ internal static class EfQueryAnalyzerHelpers
     /// </summary>
     public static bool IsSuppressedAt(SyntaxNode node, string diagnosticId)
     {
-        var disabled = false;
-        foreach (var trivia in node.SyntaxTree.GetRoot().DescendantTrivia())
-        {
-            if (trivia.SpanStart > node.SpanStart)
-            {
-                break;
-            }
-
-            if (trivia.GetStructure() is not PragmaWarningDirectiveTriviaSyntax pragma)
-            {
-                continue;
-            }
-
-            var appliesToAll = pragma.ErrorCodes.Count == 0;
-            var appliesToThis = appliesToAll || pragma.ErrorCodes.Any(code => code.ToString() == diagnosticId);
-            if (appliesToThis)
-            {
-                disabled = pragma.DisableOrRestoreKeyword.IsKind(SyntaxKind.DisableKeyword);
-            }
-        }
-
-        return disabled;
+        return node.SyntaxTree.GetRoot().DescendantTrivia()
+            .TakeWhile(trivia => trivia.SpanStart <= node.SpanStart)
+            .Select(trivia => trivia.GetStructure())
+            .OfType<PragmaWarningDirectiveTriviaSyntax>()
+            .Where(pragma => pragma.ErrorCodes.Count == 0
+                || pragma.ErrorCodes.Any(code => code.ToString() == diagnosticId))
+            .Select(pragma => pragma.DisableOrRestoreKeyword.IsKind(SyntaxKind.DisableKeyword))
+            .LastOrDefault();
     }
 
     private static IEnumerable<SyntaxNode> DescendantsExcludingNestedLocalFunctions(SyntaxNode root)
