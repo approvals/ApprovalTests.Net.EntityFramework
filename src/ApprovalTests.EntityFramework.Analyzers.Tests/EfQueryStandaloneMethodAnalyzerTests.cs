@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -24,8 +25,10 @@ internal static class Verifier
 {
     private static readonly ImmutableArray<MetadataReference> RuntimeReferences =
         ((string)AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES")!)
-            .Split(';')
-            .Where(path => path.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+            .Split(Path.PathSeparator)
+            .Where(path => !string.IsNullOrWhiteSpace(path) && 
+                           path.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) &&
+                           File.Exists(path))
             .Select(path => (MetadataReference)MetadataReference.CreateFromFile(path))
             .Append(MetadataReference.CreateFromFile(typeof(Microsoft.EntityFrameworkCore.DbContext).Assembly.Location))
             .ToImmutableArray();
