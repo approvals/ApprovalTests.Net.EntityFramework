@@ -70,6 +70,11 @@ public class EfQueryableModelTypeAnalyzer : DiagnosticAnalyzer
             return;
         }
 
+        if (IsScalarType(elementType))
+        {
+            return;
+        }
+
         var mappedEntityTypes = GetMappedEntityTypes(context.SemanticModel.Compilation);
         if (mappedEntityTypes.Contains(elementType))
         {
@@ -82,6 +87,13 @@ public class EfQueryableModelTypeAnalyzer : DiagnosticAnalyzer
             identifier.Text,
             elementType.ToDisplayString()));
     }
+
+    // Scalar column values (int, Guid, DateTime, enums, string, ...) are legitimate EF
+    // projections that translate to SQL on their own — only reference types shaped like an
+    // entity (DTOs, anonymous types) are worth flagging, since those are the ones that quietly
+    // defeat EntityFrameworkApprovals' entity-shape verification.
+    private static bool IsScalarType(ITypeSymbol type) =>
+        type.IsValueType || type.SpecialType == SpecialType.System_String;
 
     private static ITypeSymbol? GetQueryableElementType(TypeSyntax returnType, SemanticModel semanticModel)
     {

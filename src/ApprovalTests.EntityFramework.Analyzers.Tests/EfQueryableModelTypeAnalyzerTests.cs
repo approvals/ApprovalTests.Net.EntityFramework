@@ -62,6 +62,7 @@ public class EfQueryableModelTypeAnalyzerTests
     // one mapped entity (Company) and one deliberately-unmapped POCO (CompanyDto) shaped just
     // like it, so tests can distinguish "is an entity type" from "merely looks like one".
     private static string WithScaffolding(string methodBody) => $$"""
+        using System;
         using System.Collections.Generic;
         using System.Linq;
         using Microsoft.EntityFrameworkCore;
@@ -70,6 +71,7 @@ public class EfQueryableModelTypeAnalyzerTests
         {
             public int Id { get; set; }
             public string Name { get; set; } = "";
+            public Guid ExternalId { get; set; }
         }
 
         public class CompanyDto
@@ -103,7 +105,7 @@ public class EfQueryableModelTypeAnalyzerTests
     }
 
     [Fact]
-    public async Task IQueryableOfScalarProjection_Diagnostic()
+    public async Task IQueryableOfScalarProjection_NoDiagnostic()
     {
         var source = WithScaffolding("""
             public {|#0:IQueryable<string>|} CompanyNamesStartingWith(MyDbContext db, string name)
@@ -112,11 +114,33 @@ public class EfQueryableModelTypeAnalyzerTests
             }
             """);
 
-        var expected = ModelTypeVerifier.Diagnostic(DiagnosticId)
-            .WithLocation(0)
-            .WithArguments("CompanyNamesStartingWith", "string");
+        await ModelTypeVerifier.VerifyAnalyzerAsync(source);
+    }
 
-        await ModelTypeVerifier.VerifyAnalyzerAsync(source, expected);
+    [Fact]
+    public async Task IQueryableOfIntProjection_NoDiagnostic()
+    {
+        var source = WithScaffolding("""
+            public {|#0:IQueryable<int>|} CompanyIds(MyDbContext db)
+            {
+                return db.Companies.Select(c => c.Id);
+            }
+            """);
+
+        await ModelTypeVerifier.VerifyAnalyzerAsync(source);
+    }
+
+    [Fact]
+    public async Task IQueryableOfGuidProjection_NoDiagnostic()
+    {
+        var source = WithScaffolding("""
+            public {|#0:IQueryable<Guid>|} CompanyGuids(MyDbContext db)
+            {
+                return db.Companies.Select(c => c.ExternalId);
+            }
+            """);
+
+        await ModelTypeVerifier.VerifyAnalyzerAsync(source);
     }
 
     [Fact]
@@ -189,20 +213,20 @@ public class EfQueryableModelTypeAnalyzerTests
     public async Task LocalFunctionReturningIQueryableOfUnmappedType_Diagnostic()
     {
         var source = WithScaffolding("""
-            public IQueryable<string> CompanyNames(MyDbContext db)
+            public IQueryable<CompanyDto> CompanyDtos(MyDbContext db)
             {
                 return Local();
 
-                {|#0:IQueryable<string>|} Local()
+                {|#0:IQueryable<CompanyDto>|} Local()
                 {
-                    return db.Companies.Select(c => c.Name);
+                    return db.Companies.Select(c => new CompanyDto { Id = c.Id, Name = c.Name });
                 }
             }
             """);
 
         var expected = ModelTypeVerifier.Diagnostic(DiagnosticId)
             .WithLocation(0)
-            .WithArguments("Local", "string");
+            .WithArguments("Local", "CompanyDto");
 
         await ModelTypeVerifier.VerifyAnalyzerAsync(source, expected);
     }
