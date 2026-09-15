@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
+    - uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: global.json
     - run: dotnet tool install --global MarkdownSnippets.Tool
     - run: mdsnippets .
     # ensure that the above changes didn't break the build
