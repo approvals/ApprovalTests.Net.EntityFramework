@@ -7,7 +7,7 @@
     <Optimize>false</Optimize>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MarkdownSnippets" Version="28.4.4" />
+    <PackageReference Include="MarkdownSnippets" Version="28.5.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="4.0.0" />
     <PackageReference Include="Xunit" Version="2.9.3" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
